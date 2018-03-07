@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.sbtqa.tag.allure.TagAllureReporter;
 import ru.sbtqa.tag.allurehelper.ParamsHelper;
+import ru.sbtqa.tag.pagefactory.DriverManager;
 import ru.sbtqa.tag.pagefactory.PageContext;
 import ru.sbtqa.tag.pagefactory.PageFactory;
 import ru.sbtqa.tag.pagefactory.WebElementsPage;
@@ -54,7 +55,6 @@ public class SetupStepDefs {
             LOG.debug("Failed to kill one of task to kill", e);
         }
 
-        PageFactory.getDriver();
         PageFactory.getInstance();
         // reset page context. In the start of all tests we must have a clear context
         PageContext.resetContext();
@@ -110,6 +110,6 @@ public class SetupStepDefs {
                 VideoRecorder.getInstance().resetVideoRecorder();
             }
         }
-        PageFactory.dispose();
+        DriverManager.dispose();
     }
 }

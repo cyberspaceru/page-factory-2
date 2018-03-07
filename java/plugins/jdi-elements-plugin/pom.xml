@@ -51,6 +51,11 @@
       <version>${project.version}</version>
       <type>jar</type>
     </dependency>
+      <dependency>
+          <groupId>ru.sbtqa.tag.pagefactory</groupId>
+          <artifactId>page-factory-core</artifactId>
+          <version>1.0-SNAPSHOT</version>
+      </dependency>
   </dependencies>
 
 </project>

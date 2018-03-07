@@ -1,5 +1,6 @@
 package ru.sbtqa.tag.pagefactory;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.sbtqa.tag.pagefactory.annotations.ActionTitle;
 import ru.sbtqa.tag.pagefactory.exceptions.PageException;
@@ -11,9 +12,13 @@ import static ru.sbtqa.tag.pagefactory.util.PageFactoryUtils.getElementByTitle;
 /**
  * Page with common action with html-elements
  */
-public class HTMLPage extends Page {
-    
-    
+public class HTMLPage extends WebElementsPage {
+
+
+    public HTMLPage(WebDriver driver) {
+        super(driver);
+    }
+
     /**
      * Find web element with corresponding title, if it is a check box, select
      * it If it's a WebElement instance, check whether it is already selected,

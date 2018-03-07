@@ -2,6 +2,7 @@ package ru.sbtqa.tag.pagefactory;
 
 
 import com.epam.jdi.uitests.web.selenium.elements.complex.Dropdown;
+import org.openqa.selenium.WebDriver;
 import ru.sbtqa.tag.pagefactory.annotations.ActionTitle;
 import ru.sbtqa.tag.pagefactory.exceptions.PageException;
 import ru.sbtqa.tag.pagefactory.util.PageFactoryUtils;
@@ -10,7 +11,11 @@ import ru.sbtqa.tag.pagefactory.util.PageFactoryUtils;
  * Contains basic actions in particular with jdi elements
  * If we want to extend this functional - inherit from this class
  */
-public class JDIPage extends Page {
+public class JDIPage extends WebElementsPage {
+
+    public JDIPage(WebDriver driver) {
+        super(driver);
+    }
 
     /**
      * Find element with specified title annotation in dropdown, and select given option

@@ -2,6 +2,7 @@ package ru.sbtqa.tag.pagefactory;
 
 import com.google.common.reflect.ClassPath;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.sbtqa.tag.pagefactory.annotations.PageEntry;
@@ -73,7 +74,7 @@ public class PageManager {
      * @throws ru.sbtqa.tag.pagefactory.exceptions.PageInitializationException
      * TODO
      */
-    public static Page changeUrlByTitle(String packageName, String title) throws PageInitializationException {
+    public static Page changeUrlByTitle(String packageName, String title, WebDriver driver) throws PageInitializationException {
 
         Class<?> pageClass = getPageClass(packageName, title);
         if (pageClass == null) {
@@ -82,14 +83,14 @@ public class PageManager {
 
         Annotation annotation = pageClass.getAnnotation(PageEntry.class);
         if (annotation != null && !((PageEntry) annotation).url().isEmpty()) {
-            if (PageFactory.getWebDriver().getCurrentUrl() == null) {
+            if (driver.getCurrentUrl() == null) {
                 throw new AutotestError("Current URL is null");
             } else {
                 try {
-                    URL currentUrl = new URL(PageFactory.getWebDriver().getCurrentUrl());
+                    URL currentUrl = new URL(driver.getCurrentUrl());
                     String finalUrl = new URL(currentUrl.getProtocol(), currentUrl.getHost(), currentUrl.getPort(),
                             ((PageEntry) annotation).url()).toString();
-                    PageFactory.getWebDriver().navigate().to(finalUrl);
+                    driver.navigate().to(finalUrl);
                 } catch (MalformedURLException ex) {
                     LOG.error("Failed to get current url", ex);
                 }
@@ -101,6 +102,10 @@ public class PageManager {
         throw new AutotestError("WebElementsPage " + title + " doesn't have fast URL in PageEntry");
     }
 
+    public static Page changeUrlByTitle(String packageName, String title) throws PageInitializationException {
+        return changeUrlByTitle(packageName, title, DriverManager.getDriver());
+    }
+
     /**
      * Redirect to WebElementsPage by WebElementsPage Entry url value
      *
@@ -110,7 +115,7 @@ public class PageManager {
      */
     public static Page changeUrlByTitle(String title) throws PageInitializationException {
         if (null != PageContext.getCurrentPage()) {
-            PageContext.setCurrentPage(changeUrlByTitle(pagesPackage, title));
+            PageContext.setCurrentPage(changeUrlByTitle(pagesPackage, title, PageContext.getCurrentPage().getDriver()));
         }
         if (null == PageContext.getCurrentPage()) {
             PageContext.setCurrentPage(changeUrlByTitle(pagesPackage, title));
@@ -188,7 +193,13 @@ public class PageManager {
                 @SuppressWarnings("unchecked")
                 Constructor<Page> constructor = ((Constructor<Page>) page.getConstructor());
                 constructor.setAccessible(true);
-                Page currentPage = constructor.newInstance();
+                Page currentPage;
+                if(PageContext.getCurrentPage() != null) {
+                     currentPage = constructor.newInstance(PageContext.getCurrentPage().getDriver());
+                } else {
+                    currentPage = constructor.newInstance(DriverManager.getDriver());
+                }
+
                 PageContext.setCurrentPage(currentPage);
                 return currentPage;
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

@@ -4,7 +4,9 @@ import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import ru.sbtqa.tag.pagefactory.DriverManager;
 import ru.sbtqa.tag.pagefactory.PageContext;
 import ru.sbtqa.tag.pagefactory.PageFactory;
 import ru.sbtqa.tag.pagefactory.exceptions.PageInitializationException;
@@ -54,10 +56,11 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.openPage")
     public void openPage(String title) throws PageInitializationException {
-        if (PageFactory.getEnvironment() != Environment.MOBILE && 
-	      !PageFactory.getWebDriver().getWindowHandles().isEmpty()) {
-            for (String windowHandle : PageFactory.getWebDriver().getWindowHandles()) {
-                PageFactory.getWebDriver().switchTo().window(windowHandle);
+        //TODO: Fixed driver initialize
+        if (DriverManager.getEnvironment() != Environment.MOBILE &&
+	      !DriverManager.getWebDriver().getWindowHandles().isEmpty()) {
+            for (String windowHandle : DriverManager.getWebDriver().getWindowHandles()) {
+                DriverManager.getWebDriver().switchTo().window(windowHandle);
             }
         }
         PageFactory.getInstance().getPage(title);
@@ -166,12 +169,13 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.openCopyPage")
     public void openCopyPage() {
-        String pageUrl = PageFactory.getWebDriver().getCurrentUrl();
-        ((JavascriptExecutor) PageFactory.getWebDriver()).executeScript("ru.sbtqa.tag.pagefactory.window.open('" + pageUrl + "', '_blank')");
-        List<String> tabs = new ArrayList<>(PageFactory.getWebDriver().getWindowHandles());
-        PageFactory.getWebDriver().switchTo().window(tabs.get(tabs.size() - 1));
+        WebDriver driver = PageContext.getCurrentPage().getDriver();
+        String pageUrl = driver.getCurrentUrl();
+        ((JavascriptExecutor) driver).executeScript("ru.sbtqa.tag.pagefactory.window.open('" + pageUrl + "', '_blank')");
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(tabs.size() - 1));
         Assert.assertEquals("ru.sbtqa.tag.pagefactory.Fails to open a new page. "
-                + "URL is different from the expected: ", pageUrl, PageFactory.getWebDriver().getCurrentUrl());
+                + "URL is different from the expected: ", pageUrl, driver.getCurrentUrl());
     }
 
     /**
@@ -179,10 +183,11 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.switchesToNextTab")
     public void switchesToNextTab() {
-        List<String> tabs = new ArrayList<>(PageFactory.getWebDriver().getWindowHandles());
+        WebDriver driver = PageContext.getCurrentPage().getDriver();
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
         for (int i = 0; i < tabs.size(); i++) {
-            if (tabs.get(i).equals(PageFactory.getWebDriver().getWindowHandle())) {
-                PageFactory.getWebDriver().switchTo().window(tabs.get(i + 1));
+            if (tabs.get(i).equals(driver.getWindowHandle())) {
+                driver.switchTo().window(tabs.get(i + 1));
             }
         }
     }
@@ -194,7 +199,8 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.urlMatches")
     public void urlMatches(String url) {
-        Assert.assertEquals("ru.sbtqa.tag.pagefactory.URL is different from the expected: ", url, PageFactory.getWebDriver().getCurrentUrl());
+        Assert.assertEquals("ru.sbtqa.tag.pagefactory.URL is different from the expected: ", url,
+                PageContext.getCurrentPage().getDriver().getCurrentUrl());
     }
 
     /**
@@ -204,10 +210,11 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.closingCurrentWin")
     public void closingCurrentWin(String title) {
-        PageFactory.getWebDriver().close();
-        for (String windowHandle : PageFactory.getWebDriver().getWindowHandles()) {
-            PageFactory.getWebDriver().switchTo().window(windowHandle);
-            if (PageFactory.getWebDriver().getTitle().equals(title)) {
+        WebDriver driver = PageContext.getCurrentPage().getDriver();
+        driver.close();
+        for (String windowHandle : driver.getWindowHandles()) {
+            driver.switchTo().window(windowHandle);
+            if (driver.getTitle().equals(title)) {
                 return;
             }
         }
@@ -219,7 +226,7 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.backPage")
     public void backPage() {
-        PageFactory.getWebDriver().navigate().back();
+        PageContext.getCurrentPage().getDriver().navigate().back();
     }
 
     /**
@@ -240,7 +247,7 @@ public class GenericStepDefs {
      */
     @And("ru.sbtqa.tag.pagefactory.reInitPage")
     public void reInitPage() {
-        PageFactory.getWebDriver().navigate().refresh();
+        PageContext.getCurrentPage().getDriver().navigate().refresh();
     }
     
     /**

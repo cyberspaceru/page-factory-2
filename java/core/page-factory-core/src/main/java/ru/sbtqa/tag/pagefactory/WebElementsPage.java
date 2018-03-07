@@ -36,6 +36,10 @@ public abstract class WebElementsPage extends Page {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebElementsPage.class);
 
+    public WebElementsPage(WebDriver driver) {
+        super(driver);
+    }
+
     /**
      * Find element with specified title annotation, and fill it with given text
      * Add elementTitle-&gt;text as parameter-&gt;value to corresponding step in
@@ -51,11 +55,11 @@ public abstract class WebElementsPage extends Page {
         WebElement webElement = getElementByTitle(PageContext.getCurrentPage(), elementTitle);
         webElement.click();
         
-        if (PageFactory.getEnvironment() == Environment.WEB) {
+        if (DriverManager.getEnvironment() == Environment.WEB) {
             webElement.clear();
         }
         
-        if (PageFactory.getEnvironment() == Environment.MOBILE && TagMobileDriver.getAppiumClickAdb()) {
+        if (DriverManager.getEnvironment() == Environment.MOBILE && TagMobileDriver.getAppiumClickAdb()) {
             // set ADBKeyBoard as default
             AdbConsole.execute("ime set com.android.adbkeyboard/.AdbIME");
             // send broadcast intent via adb
@@ -93,7 +97,7 @@ public abstract class WebElementsPage extends Page {
      * @param webElement a WebElement object to click
      */
     protected void clickWebElement(WebElement webElement) {
-        if (PageFactory.getEnvironment() == Environment.MOBILE && TagMobileDriver.getAppiumClickAdb()) {
+        if (DriverManager.getEnvironment() == Environment.MOBILE && TagMobileDriver.getAppiumClickAdb()) {
             // get center point of element to tap on it
             int x = webElement.getLocation().getX() + webElement.getSize().getWidth() / 2;
             int y = webElement.getLocation().getY() + webElement.getSize().getHeight() / 2;
@@ -226,7 +230,7 @@ public abstract class WebElementsPage extends Page {
                 + " content.push(options[i].text)"
                 + "}"
                 + "return content";
-        List<String> options = (ArrayList<String>) ((JavascriptExecutor) PageFactory.getDriver()).
+        List<String> options = (ArrayList<String>) ((JavascriptExecutor) getDriver()).
                 executeScript(jsString, webElement);
 
         boolean isSelectionMade = false;
@@ -319,7 +323,7 @@ public abstract class WebElementsPage extends Page {
         try {
             String popupHandle = WebExtension.findNewWindowHandle((Set<String>) Stash.getValue("beforeClickHandles"));
             if (null != popupHandle && !popupHandle.isEmpty()) {
-                PageFactory.getWebDriver().switchTo().window(popupHandle);
+                getDriver().switchTo().window(popupHandle);
             }
             assertTextAppears(text);
         } catch (Exception ex) {

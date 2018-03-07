@@ -9,10 +9,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.sbtqa.tag.pagefactory.drivers.TagMobileDriver;
-import ru.sbtqa.tag.pagefactory.drivers.TagWebDriver;
-import ru.sbtqa.tag.pagefactory.exceptions.FactoryRuntimeException;
-import ru.sbtqa.tag.pagefactory.support.Environment;
 import ru.sbtqa.tag.qautils.properties.Props;
 import ru.sbtqa.tag.videorecorder.VideoRecorder;
 
@@ -30,45 +26,9 @@ public class PageFactory {
     private static VideoRecorder videoRecorder;
     private static boolean aspectsDisabled = false;
 
-    private static final String ENVIRONMENT = Props.get("driver.environment");
     private static final String PAGES_PACKAGE = Props.get("page.package");
     private static final String TIMEOUT = Props.get("page.load.timeout");
 
-    private static final String ENVIRONMENT_WEB = "web";
-    private static final String ENVIRONMENT_MOBILE = "mobile";
-
-    public static WebDriver getWebDriver() {
-        return getDriver();
-    }
-
-    public static AppiumDriver getMobileDriver() {
-        return (AppiumDriver) getDriver();
-    }
-
-
-    public static WebDriver getDriver() {
-        switch (getEnvironment()) {
-            case WEB:
-                return TagWebDriver.getDriver();
-            case MOBILE:
-                return TagMobileDriver.getDriver();
-            default:
-                throw new FactoryRuntimeException("Failed to get driver");
-        }
-    }
-
-    public static void dispose() {
-        switch (getEnvironment()) {
-            case WEB:
-                TagWebDriver.dispose();
-                break;
-            case MOBILE:
-                TagMobileDriver.dispose();
-                break;
-            default:
-                throw new FactoryRuntimeException("Failed to dispose");
-        }
-    }
 
     public static void initElements(WebDriver driver, Object page) {
         org.openqa.selenium.support.PageFactory.initElements(driver, page);
@@ -97,7 +57,7 @@ public class PageFactory {
      */
     public static Actions getActions() {
         if (null == actions) {
-            actions = new Actions(getWebDriver());
+            actions = new Actions(PageContext.getCurrentPage().getDriver());
         }
         return actions;
     }
@@ -152,14 +112,4 @@ public class PageFactory {
         videoRecorder = null;
     }
 
-    public static Environment getEnvironment() {
-        switch (ENVIRONMENT) {
-            case ENVIRONMENT_WEB:
-                return Environment.WEB;
-            case ENVIRONMENT_MOBILE:
-                return Environment.MOBILE;
-            default:
-                throw new FactoryRuntimeException("Environment '" + ENVIRONMENT + "' is not supported");
-        }
-    }
 }
