@@ -1,12 +1,14 @@
 package ru.sbtqa.tag.pagefactory.extensions;
 
 import java.util.List;
+
+import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.sbtqa.tag.pagefactory.PageFactory;
+import ru.sbtqa.tag.pagefactory.PageContext;
 import ru.sbtqa.tag.pagefactory.exceptions.SwipeException;
 import ru.sbtqa.tag.qautils.strategies.DirectionStrategy;
 import ru.sbtqa.tag.qautils.strategies.MatchStrategy;
@@ -65,7 +67,7 @@ public class MobileExtension {
      * @throws SwipeException if there is an error while swiping
      */
     public static void swipe(DirectionStrategy direction, int time) throws SwipeException {
-	Dimension size = PageFactory.getMobileDriver().manage().window().getSize();
+	Dimension size = PageContext.getCurrentPage().getDriver().manage().window().getSize();
 	swipe(new Point(0, 0), size, direction, time);
     }
 
@@ -108,7 +110,7 @@ public class MobileExtension {
 	int x = location.getX();
 	int y = location.getY();
 	LOG.debug("Swipe parameters: location {}, dimension {}, direction {}, time {}", location, size, direction, time);
-	PageFactory.getMobileDriver().swipe(x + startx, y + starty, x + endx, y + endy, time);
+	((AppiumDriver) PageContext.getCurrentPage().getDriver()).swipe(x + startx, y + starty, x + endx, y + endy, time);
     }
 
     /**
@@ -145,14 +147,14 @@ public class MobileExtension {
      */
     public static void swipeToText(DirectionStrategy direction, String text, MatchStrategy strategy, int depth) throws SwipeException {
 	for (int depthCounter = 0; depthCounter < depth; depthCounter++) {
-	    String oldPageSource = PageFactory.getDriver().getPageSource();
+	    String oldPageSource = PageContext.getCurrentPage().getDriver().getPageSource();
 	    switch (strategy) {
 		case EXACT:
-		    if (PageFactory.getMobileDriver().findElementsByXPath("//*[@text='" + text + "']").size() > 0) {
+		    if (((AppiumDriver) PageContext.getCurrentPage().getDriver()).findElementsByXPath("//*[@text='" + text + "']").size() > 0) {
 			return;
 		    }
 		case CONTAINS:
-		    List<WebElement> textViews = PageFactory.getMobileDriver().findElementsByClassName("android.widget.TextView");
+		    List<WebElement> textViews = ((AppiumDriver) PageContext.getCurrentPage().getDriver()).findElementsByClassName("android.widget.TextView");
 		    if (textViews.size() > 0) {
 			for (WebElement textView : textViews) {
 			    if (textView.getText().contains(text)) {
@@ -163,7 +165,7 @@ public class MobileExtension {
 	    }
 	    swipe(direction);
 
-	    if (PageFactory.getDriver().getPageSource().equals(oldPageSource)) {
+	    if (PageContext.getCurrentPage().getDriver().getPageSource().equals(oldPageSource)) {
 		throw new SwipeException("Swiping limit is reached. Text not found");
 	    }
 	}

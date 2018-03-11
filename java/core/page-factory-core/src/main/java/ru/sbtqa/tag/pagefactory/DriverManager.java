@@ -6,13 +6,16 @@ import ru.sbtqa.tag.pagefactory.drivers.TagMobileDriver;
 import ru.sbtqa.tag.pagefactory.drivers.TagWebDriver;
 import ru.sbtqa.tag.pagefactory.exceptions.FactoryRuntimeException;
 import ru.sbtqa.tag.pagefactory.support.Environment;
+import ru.sbtqa.tag.pagefactory.support.properties.Configuration;
+import ru.sbtqa.tag.pagefactory.support.properties.Properties;
 import ru.sbtqa.tag.qautils.properties.Props;
 
 public class DriverManager {
 
-    private static final String ENVIRONMENT = Props.get("driver.environment");
     private static final String ENVIRONMENT_WEB = "web";
     private static final String ENVIRONMENT_MOBILE = "mobile";
+
+    private static final Configuration PROPERTIES = Properties.getProperties();
 
     public static WebDriver getWebDriver() {
         return getDriver();
@@ -48,13 +51,14 @@ public class DriverManager {
     }
 
     public static Environment getEnvironment() {
-        switch (ENVIRONMENT) {
+        String environment = PROPERTIES.getEnvironment();
+        switch (environment) {
             case ENVIRONMENT_WEB:
                 return Environment.WEB;
             case ENVIRONMENT_MOBILE:
                 return Environment.MOBILE;
             default:
-                throw new FactoryRuntimeException("Environment '" + ENVIRONMENT + "' is not supported");
+                throw new FactoryRuntimeException("Environment '" + environment + "' is not supported");
         }
     }
 }

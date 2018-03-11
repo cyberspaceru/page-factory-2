@@ -42,7 +42,7 @@ public class ClickAspect {
 
         if (!PageFactory.isAspectsDisabled()) {
             Actions actions = new Actions(PageFactory.getWebDriver());
-            if (IE.equals(TagWebDriver.getBrowserName())) {
+            if (BrowserType.IE.equals(TagWebDriver.getBrowserName())) {
                 Dimension size = PageFactory.getWebDriver().manage().window().getSize();
                 Point elementLocation = (targetWebElement).getLocation();
                 Dimension elementSize = (targetWebElement).getSize();
@@ -55,8 +55,8 @@ public class ClickAspect {
             }
 
             switch (TagWebDriver.getBrowserName()) {
-                case CHROME:
-                case IE:
+                case BrowserType.CHROME:
+                case BrowserType.IE:
                     actions.moveToElement(targetWebElement);
                     actions.click();
                     actions.build().perform();

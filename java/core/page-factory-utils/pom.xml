@@ -41,6 +41,11 @@
       <artifactId>allure-helper</artifactId>
       <version>1.2.2</version>
     </dependency>
+      <dependency>
+          <groupId>io.appium</groupId>
+          <artifactId>java-client</artifactId>
+          <version>4.1.2</version>
+      </dependency>
   </dependencies>
 
 </project>
