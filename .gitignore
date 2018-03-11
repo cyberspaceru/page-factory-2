@@ -1,3 +1,9 @@
+/java/core/page-factory-core/target/
+/java/tests/test-web-app/target/
+/java/core/page-factory-api/target/
+/java/core/page-factory-utils/target/
+/java/plugins/html-elements-plugin/target/
+/java/plugins/jdi-elements-plugin/target/
 target/
 .project/
 .idea/
