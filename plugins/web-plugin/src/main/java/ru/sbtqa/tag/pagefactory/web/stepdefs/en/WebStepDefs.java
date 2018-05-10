@@ -28,7 +28,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^URL matches \"(.*?)\"$")
+    @And("^URL matches \"([^\"]*)\"$")
     public void urlMatches(String url) {
         super.urlMatches(url);
     }
@@ -37,7 +37,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user closes the current window and returns to \"(.*?)\"$")
+    @And("^user closes the current window and returns to \"([^\"]*)\"$")
     public void closingCurrentWin(String title) {
         super.closingCurrentWin(title);
     }
@@ -55,7 +55,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user navigates to page \"(.*?)\"$")
+    @And("^user navigates to page \"([^\"]*)\"$")
     public void goToUrl(String url) {
         super.goToUrl(url);
     }
@@ -64,7 +64,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user navigates to url \"(.*?)\"$")
+    @And("^user navigates to url \"([^\"]*)\"$")
     public void goToPageByUrl(String url) throws PageInitializationException {
         super.goToPageByUrl(url);
     }

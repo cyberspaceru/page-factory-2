@@ -19,7 +19,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)переключается на соседнюю вкладку$")
+    @И("^(?:пользователь |он )?переключается на соседнюю вкладку$")
     public void switchesToNextTab() {
         super.switchesToNextTab();
     }
@@ -28,7 +28,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^URL соответствует \"(.*?)\"$")
+    @И("^URL соответствует \"([^\"]*)\"$")
     public void urlMatches(String url) {
         super.urlMatches(url);
     }
@@ -37,7 +37,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)закрывает текущее окно и возвращается на \"(.*?)\"$")
+    @И("^(?:пользователь |он )?закрывает текущее окно и возвращается на \"([^\"]*)\"$")
     public void closingCurrentWin(String title) {
         super.closingCurrentWin(title);
     }
@@ -46,7 +46,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)нажимает назад в браузере$")
+    @И("^(?:пользователь |он )?нажимает назад в браузере$")
     public void backPage() {
         super.backPage();
     }
@@ -55,7 +55,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)переходит на страницу \"(.*?)\" по ссылке$")
+    @И("^(?:пользователь |он )?переходит на страницу \"([^\"]*)\" по ссылке$")
     public void goToUrl(String url) {
         super.goToUrl(url);
     }
@@ -64,7 +64,7 @@ public class WebStepDefs extends WebGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)(?:переходит на|открывает) url \"(.*?)\"$")
+    @И("^(?:пользователь |он )?(?:переходит на|открывает) url \"([^\"]*)\"$")
     public void goToPageByUrl(String url) throws PageInitializationException {
         super.goToPageByUrl(url);
     }
