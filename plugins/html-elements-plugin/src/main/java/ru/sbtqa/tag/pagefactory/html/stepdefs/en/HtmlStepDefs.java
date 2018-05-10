@@ -11,7 +11,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user in block \"([^\"]*)\" \\((.*?)\\)$")
+    @And("^user in block \"([^\"]*)\" \\(([^)]*)\\)$")
     public void userActionInBlockNoParams(String block, String action) throws NoSuchMethodException {
         super.userActionInBlockNoParams(block, action);
     }
@@ -20,7 +20,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user in block \"([^\"]*)\" \\((.*?)\\) with the parameters of table$")
+    @And("^user in block \"([^\"]*)\" \\(([^)]*)\\) with the parameters of table$")
     public void userActionInBlockTableParam(String block, String action, DataTable dataTable) throws NoSuchMethodException {
         super.userActionInBlockTableParam(block, action, dataTable);
     }
@@ -29,7 +29,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user in block \"([^\"]*)\" \\((.*?)\\) with a parameter \"([^\"]*)\"$")
+    @And("^user in block \"([^\"]*)\" \\(([^)]*)\\) with a parameter \"([^\"]*)\"$")
     public void userActionInBlockOneParam(String block, String action, String param) throws NoSuchMethodException {
         super.userActionInBlockOneParam(block, action, param);
     }
@@ -38,7 +38,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @And("^user in block \"([^\"]*)\" \\((.*?)\\) with the parameters \"([^\"]*)\"  \"([^\"]*)\"$")
+    @And("^user in block \"([^\"]*)\" \\(([^)]*)\\) with the parameters \"([^\"]*)\" \"([^\"]*)\"$")
     public void userActionInBlockTwoParams(String block, String action, String param1, String param2) throws NoSuchMethodException {
         super.userActionInBlockTwoParams(block, action, param1, param2);
     }

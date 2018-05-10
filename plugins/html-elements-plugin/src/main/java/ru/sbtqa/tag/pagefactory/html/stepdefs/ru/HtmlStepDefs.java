@@ -11,7 +11,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)в блоке \"([^\"]*)\" \\((.*?)\\)$")
+    @И("^(?:пользователь |он )?в блоке \"([^\"]*)\" \\(([^)]*)\\)$")
     public void userActionInBlockNoParams(String block, String action) throws NoSuchMethodException {
         super.userActionInBlockNoParams(block, action);
     }
@@ -20,7 +20,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)в блоке \"([^\"]*)\" \\((.*?)\\) с параметрами из таблицы$")
+    @И("^(?:пользователь |он )?в блоке \"([^\"]*)\" \\(([^)]*)\\) с параметрами из таблицы$")
     public void userActionInBlockTableParam(String block, String action, DataTable dataTable) throws NoSuchMethodException {
         super.userActionInBlockTableParam(block, action, dataTable);
     }
@@ -29,7 +29,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)в блоке \"([^\"]*)\" \\((.*?)\\) с параметром \"([^\"]*)\"$")
+    @И("^(?:пользователь |он )?в блоке \"([^\"]*)\" \\(([^)]*)\\) с параметром \"([^\"]*)\"$")
     public void userActionInBlockOneParam(String block, String action, String param) throws NoSuchMethodException {
         super.userActionInBlockOneParam(block, action, param);
     }
@@ -38,7 +38,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)в блоке \"([^\"]*)\" \\((.*?)\\) с параметрами \"([^\"]*)\" \"([^\"]*)\"$")
+    @И("^(?:пользователь |он )?в блоке \"([^\"]*)\" \\(([^)]*)\\) с параметрами \"([^\"]*)\" \"([^\"]*)\"$")
     public void userActionInBlockTwoParams(String block, String action, String param1, String param2) throws NoSuchMethodException {
         super.userActionInBlockTwoParams(block, action, param1, param2);
     }
@@ -47,7 +47,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)в блоке \"([^\"]*)\" находит (элемент|текстовое поле|чекбокс|радиокнопка|таблицу|заголовок|кнопку|ссылку|изображение) \"([^\"]*)\"$")
+    @И("^(?:пользователь |он )?в блоке \"([^\"]*)\" находит (элемент|текстовое поле|чекбокс|радиокнопка|таблицу|заголовок|кнопку|ссылку|изображение) \"([^\"]*)\"$")
     public void findElementInBlock(String block, String elementType, String elementTitle) throws PageException {
         super.findElementInBlock(block, elementType, elementTitle);
     }
@@ -56,7 +56,7 @@ public class HtmlStepDefs extends HtmlGenericStepDefs {
      * {@inheritDoc}
      */
     @Override
-    @И("^(?:пользователь |он |)в списке \"([^\"]*)\" находит элемент со значением \"([^\"]*)\"$")
+    @И("^(?:пользователь |он )?в списке \"([^\"]*)\" находит элемент со значением \"([^\"]*)\"$")
     public void findElementInList(String listTitle, String value) throws PageException {
         super.findElementInList(listTitle, value);
     }
