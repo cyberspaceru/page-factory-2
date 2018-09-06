@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -22,7 +23,6 @@ import ru.sbtqa.tag.pagefactory.annotations.ActionTitle;
 import ru.sbtqa.tag.pagefactory.annotations.ActionTitles;
 import ru.sbtqa.tag.pagefactory.annotations.ElementTitle;
 import ru.sbtqa.tag.pagefactory.annotations.ValidationRule;
-import ru.sbtqa.tag.pagefactory.context.ScenarioContext;
 import ru.sbtqa.tag.pagefactory.exceptions.ElementDescriptionException;
 import ru.sbtqa.tag.pagefactory.exceptions.ElementNotFoundException;
 import ru.sbtqa.tag.pagefactory.exceptions.FactoryRuntimeException;
@@ -130,7 +130,7 @@ public class ReflectionUtils {
 
         I18N i18n = null;
         try {
-            i18n = I18N.getI18n(method.getDeclaringClass(), ScenarioContext.getScenario());
+            i18n = I18N.getI18n(method.getDeclaringClass(), new Locale("en"));
         } catch (I18NRuntimeException e) {
             LOG.debug("There is no bundle for translation class. Leave it as is", e);
         }

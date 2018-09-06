@@ -45,8 +45,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param title of the page to initialize
      * @throws PageInitializationException if page initialization failed
      */
-    public void openPage(String title) throws PageInitializationException {
+    public CoreGenericSteps openPage(String title) throws PageInitializationException {
         PageManager.getPage(title);
+        return this;
     }
 
     /**
@@ -55,8 +56,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param action title of the action to execute
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userActionNoParams(String action) throws NoSuchMethodException {
+    public CoreGenericSteps userActionNoParams(String action) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action);
+        return this;
     }
 
     /**
@@ -66,8 +68,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param param parameter
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userActionOneParam(String action, String param) throws NoSuchMethodException {
+    public CoreGenericSteps userActionOneParam(String action, String param) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action, param);
+        return this;
     }
 
     /**
@@ -78,8 +81,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param param2 second parameter
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userActionTwoParams(String action, String param1, String param2) throws NoSuchMethodException {
+    public CoreGenericSteps userActionTwoParams(String action, String param1, String param2) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action, param1, param2);
+        return this;
     }
 
     /**
@@ -91,8 +95,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param param3 third parameter
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userActionThreeParams(String action, String param1, String param2, String param3) throws NoSuchMethodException {
+    public CoreGenericSteps userActionThreeParams(String action, String param1, String param2, String param3) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action, param1, param2, param3);
+        return this;
     }
 
     /**
@@ -103,8 +108,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param dataTable table of parameters
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userActionTableParam(String action, DataTable dataTable) throws NoSuchMethodException {
+    public CoreGenericSteps userActionTableParam(String action, DataTable dataTable) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action, dataTable);
+        return this;
     }
 
     /**
@@ -116,8 +122,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param dataTable table of parameters
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userDoActionWithObject(String action, String param, DataTable dataTable) throws NoSuchMethodException {
+    public CoreGenericSteps userDoActionWithObject(String action, String param, DataTable dataTable) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action, param, dataTable);
+        return this;
     }
 
     /**
@@ -128,8 +135,9 @@ public class CoreGenericSteps extends CoreSetupSteps {
      * @param list parameters list
      * @throws NoSuchMethodException if corresponding method doesn't exist
      */
-    public void userActionListParam(String action, List<String> list) throws NoSuchMethodException {
+    public CoreGenericSteps userActionListParam(String action, List<String> list) throws NoSuchMethodException {
         ReflectionUtils.executeMethodByTitle(PageContext.getCurrentPage(), action, list);
+        return this;
     }
 
     /**

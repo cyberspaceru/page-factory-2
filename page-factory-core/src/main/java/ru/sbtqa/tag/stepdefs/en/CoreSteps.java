@@ -35,8 +35,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^(?:user |he |)(?:is on the page|page is being opened|master tab is being opened) \"(.*?)\"$")
-    public void openPage(String title) throws PageInitializationException {
+    public CoreSteps openPage(String title) throws PageInitializationException {
         super.openPage(title);
+        return this;
     }
 
     /**
@@ -44,8 +45,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\)$")
-    public void userActionNoParams(String action) throws NoSuchMethodException {
+    public CoreSteps userActionNoParams(String action) throws NoSuchMethodException {
         super.userActionNoParams(action);
+        return this;
     }
 
     /**
@@ -53,8 +55,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\) (?:with param |)\"([^\"]*)\"$")
-    public void userActionOneParam(String action, String param) throws NoSuchMethodException {
+    public CoreSteps userActionOneParam(String action, String param) throws NoSuchMethodException {
         super.userActionOneParam(action, param);
+        return this;
     }
 
     /**
@@ -62,8 +65,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\) (?:with the parameters |)\"([^\"]*)\" \"([^\"]*)\"$")
-    public void userActionTwoParams(String action, String param1, String param2) throws NoSuchMethodException {
+    public CoreSteps userActionTwoParams(String action, String param1, String param2) throws NoSuchMethodException {
         super.userActionTwoParams(action, param1, param2);
+        return this;
     }
 
     /**
@@ -71,8 +75,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\) (?:with the parameters |)\"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\"$")
-    public void userActionThreeParams(String action, String param1, String param2, String param3) throws NoSuchMethodException {
+    public CoreSteps userActionThreeParams(String action, String param1, String param2, String param3) throws NoSuchMethodException {
         super.userActionThreeParams(action, param1, param2, param3);
+        return this;
     }
 
     /**
@@ -80,8 +85,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\) data$")
-    public void userActionTableParam(String action, DataTable dataTable) throws NoSuchMethodException {
+    public CoreSteps userActionTableParam(String action, DataTable dataTable) throws NoSuchMethodException {
         super.userActionTableParam(action, dataTable);
+        return this;
     }
 
     /**
@@ -89,8 +95,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\) [^\"]*\"([^\"]*) data$")
-    public void userDoActionWithObject(String action, String param, DataTable dataTable) throws NoSuchMethodException {
+    public CoreSteps userDoActionWithObject(String action, String param, DataTable dataTable) throws NoSuchMethodException {
         super.userDoActionWithObject(action, param, dataTable);
+        return this;
     }
 
     /**
@@ -98,8 +105,9 @@ public class CoreSteps extends CoreGenericSteps {
      */
     @Override
     @And("^user \\((.*?)\\) from the list$")
-    public void userActionListParam(String action, List<String> list) throws NoSuchMethodException {
+    public CoreSteps userActionListParam(String action, List<String> list) throws NoSuchMethodException {
         super.userActionListParam(action, list);
+        return this;
     }
 
     /**
