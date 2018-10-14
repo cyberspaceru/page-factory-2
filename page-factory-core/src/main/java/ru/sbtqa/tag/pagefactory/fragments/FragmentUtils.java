@@ -1,15 +1,12 @@
 package ru.sbtqa.tag.pagefactory.fragments;
 
 import gherkin.ast.Step;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import ru.sbtqa.tag.qautils.i18n.I18N;
-import ru.sbtqa.tag.stepdefs.CoreGenericSteps;
 
 public class FragmentUtils {
 
-    private static final String FRAGMENT_STEP_REGEX_KEY = "ru.sbtqa.tag.pagefactory.insertFragment";
+    private static final String FRAGMENT_STEP_REGEX_KEY = "^(?:пользователь |он |)вставляет фрагмент \\\"([^\\\"]*)\\\"$";
 
     private FragmentUtils() {}
 
@@ -47,6 +44,6 @@ public class FragmentUtils {
      * @return regex of steps in need of replacement
      */
     private static String getFragmentStepRegex(String language) {
-        return I18N.getI18n(CoreGenericSteps.class, new Locale(language)).get(FRAGMENT_STEP_REGEX_KEY);
+        return FRAGMENT_STEP_REGEX_KEY;
     }
 }

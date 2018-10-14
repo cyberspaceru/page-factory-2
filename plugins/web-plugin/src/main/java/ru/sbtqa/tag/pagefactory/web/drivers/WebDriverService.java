@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.aeonbits.owner.ConfigFactory;
+import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,13 +16,17 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -36,12 +41,30 @@ import ru.sbtqa.tag.pagefactory.web.environment.WebEnvironment;
 import ru.sbtqa.tag.pagefactory.web.properties.WebConfiguration;
 import ru.sbtqa.tag.pagefactory.web.support.BrowserName;
 
-public class WebDriverService implements DriverService {
+import static ru.sbtqa.tag.pagefactory.environment.Environment.getDriverService;
 
+public class WebDriverService implements DriverService {
     private static final Logger LOG = LoggerFactory.getLogger(WebDriverService.class);
     private static final WebConfiguration PROPERTIES = ConfigFactory.create(WebConfiguration.class);
 
     private WebDriver webDriver;
+    private static long currentImplicitlyWaitInSeconds = -1;
+
+    public static WebDriver getWebDriver() {
+        return getDriverService().getDriver();
+    }
+
+    public void implicitlyWaitTime(long seconds) {
+        currentImplicitlyWaitInSeconds = seconds;
+        getWebDriver().manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+    }
+
+    public long implicitlyWaitTime() {
+        if (currentImplicitlyWaitInSeconds == -1) {
+            throw new NotImplementedException("Implicitly Wait can be -1");
+        }
+        return currentImplicitlyWaitInSeconds;
+    }
 
     @Override
     public WebDriver getDriver() {
@@ -85,20 +108,24 @@ public class WebDriverService implements DriverService {
             setWebDriver(createRemoteWebDriver(webDriverUrl, capabilities));
         } else {
             if (browserName.equals(BrowserName.FIREFOX)) {
-                setWebDriver(new FirefoxDriver(capabilities));
+                FirefoxOptions options = new FirefoxOptions(capabilities);
+                setWebDriver(new FirefoxDriver(options));
             } else if (browserName.equals(BrowserName.SAFARI)) {
-                setWebDriver(new SafariDriver(capabilities));
+                SafariOptions options = new SafariOptions(capabilities);
+                setWebDriver(new SafariDriver(options));
             } else if (browserName.equals(BrowserName.CHROME)) {
+                ChromeOptions options = new ChromeOptions().merge(capabilities);
                 WebDriverManagerConfigurator.configureDriver(ChromeDriverManager.getInstance(), BrowserName.CHROME.getName());
-                setWebDriver(new ChromeDriver(capabilities));
+                setWebDriver(new ChromeDriver(options));
             } else if (browserName.equals(BrowserName.INTERNET_EXPLORER)) {
+                InternetExplorerOptions options = new InternetExplorerOptions(capabilities);
                 WebDriverManagerConfigurator.configureDriver(InternetExplorerDriverManager.getInstance(), BrowserName.IE.getName());
-                setWebDriver(new InternetExplorerDriver(capabilities));
+                setWebDriver(new InternetExplorerDriver(options));
             } else {
                 throw new UnsupportedBrowserException("'" + browserName + "' is not supported yet");
             }
         }
-
+        implicitlyWaitTime(PROPERTIES.getTimeout());
         webDriver.manage().timeouts().pageLoadTimeout(PROPERTIES.getTimeout(), TimeUnit.SECONDS);
         setBrowserSize();
         webDriver.get(PROPERTIES.getStartingUrl());

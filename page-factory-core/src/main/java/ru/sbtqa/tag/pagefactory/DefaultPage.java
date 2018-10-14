@@ -7,20 +7,18 @@ import ru.sbtqa.tag.pagefactory.annotations.ActionTitles;
 import ru.sbtqa.tag.pagefactory.annotations.PageEntry;
 import ru.sbtqa.tag.pagefactory.checks.PageChecks;
 import ru.sbtqa.tag.pagefactory.context.PageContext;
-import ru.sbtqa.tag.pagefactory.environment.Environment;
 import ru.sbtqa.tag.pagefactory.exceptions.ElementNotFoundException;
 import ru.sbtqa.tag.pagefactory.exceptions.PageException;
 import ru.sbtqa.tag.pagefactory.utils.ReflectionUtils;
 import ru.sbtqa.tag.qautils.errors.AutotestError;
 
-public abstract class DefaultPage implements Page {
+public abstract class DefaultPage<A extends PageActions, C extends  PageChecks> implements Page {
+    private A actions;
+    private C checks;
 
-    PageActions pageActions;
-    PageChecks pageChecks;
-
-    public DefaultPage() {
-        pageActions = Environment.getPageActions();
-        pageChecks = Environment.getPageChecks();
+    public DefaultPage(A actions, C checks) {
+        this.actions = actions;
+        this.checks = checks;
     }
 
     /**
@@ -33,6 +31,14 @@ public abstract class DefaultPage implements Page {
         return this.getClass().getAnnotation(PageEntry.class).title();
     }
 
+    public A getActions() {
+        return actions;
+    }
+
+    public C getChecks() {
+        return checks;
+    }
+
     /**
      * Fill specified element with text
      *
@@ -40,10 +46,10 @@ public abstract class DefaultPage implements Page {
      * @param text text to enter
      * @throws PageException if page was not initialized, or required element couldn't be found
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.fill.field")
+    @ActionTitle("заполняет поле")
     public void fill(String elementTitle, String text) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        pageActions.fill(element, text);
+        actions.fill(element, text);
     }
 
     /**
@@ -53,11 +59,11 @@ public abstract class DefaultPage implements Page {
      * @throws PageException if page was not initialized, or required element couldn't be found
      */
     @ActionTitles({
-            @ActionTitle("ru.sbtqa.tag.pagefactory.click.link"),
-            @ActionTitle("ru.sbtqa.tag.pagefactory.click.button")})
+            @ActionTitle("кликает по ссылке"),
+            @ActionTitle("нажимает кнопку")})
     public void click(String elementTitle) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        pageActions.click(element);
+        actions.click(element);
     }
 
     /**
@@ -65,9 +71,9 @@ public abstract class DefaultPage implements Page {
      *
      * @param keyName name of the key. See available key names in {@link Keys}
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.press.key")
+    @ActionTitle("нажимает клавишу")
     public void pressKey(String keyName) {
-        pageActions.press(null, keyName);
+        actions.press(null, keyName);
     }
 
     /**
@@ -77,10 +83,10 @@ public abstract class DefaultPage implements Page {
      * @param elementTitle title of element that accepts key commands
      * @throws PageException if couldn't find element with required title
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.press.key")
+    @ActionTitle("нажимает клавишу")
     public void pressKey(String keyName, String elementTitle) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        pageActions.press(element, keyName);
+        actions.press(element, keyName);
     }
 
     /**
@@ -91,10 +97,10 @@ public abstract class DefaultPage implements Page {
      * @throws PageException if required
      * element couldn't be found, or current page isn't initialized
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.select")
+    @ActionTitle("выбирает")
     public void select(String elementTitle, String option) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        pageActions.select(element, option);
+        actions.select(element, option);
     }
 
     /**
@@ -103,10 +109,10 @@ public abstract class DefaultPage implements Page {
      * @param elementTitle element that is supposed to represent checkbox
      * @throws PageException if page was not initialized, or required element couldn't be found
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.select.checkbox")
+    @ActionTitle("отмечает чекбокс")
     public void setCheckBox(String elementTitle) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        pageActions.setCheckbox(element, true);
+        actions.setCheckbox(element, true);
     }
 
 
@@ -117,10 +123,10 @@ public abstract class DefaultPage implements Page {
      * @param elementTitle title of the element to search
      * @throws ElementNotFoundException if couldn't find element by given title, or current page isn't initialized
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.check.value")
+    @ActionTitle("проверяет значение")
     public void checkValueIsEqual(String elementTitle, String text) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        if (!pageChecks.checkEquality(element, text)) {
+        if (!checks.checkEquality(element, text)) {
             throw new AutotestError("'" + elementTitle + "' value is not equal with '" + text + "'");
         }
     }
@@ -132,10 +138,10 @@ public abstract class DefaultPage implements Page {
      * @param elementTitle title of the element to search
      * @throws PageException if current page wasn't initialized, or element with required title was not found
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.check.values.not.equal")
+    @ActionTitle("проверяет несовпадение значения")
     public void checkValueIsNotEqual(String elementTitle, String text) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        if (pageChecks.checkEquality(element, text)) {
+        if (checks.checkEquality(element, text)) {
             throw new AutotestError("'" + elementTitle + "' value is equal with '" + text + "'");
         }
     }
@@ -146,10 +152,10 @@ public abstract class DefaultPage implements Page {
      * @param elementTitle title of the element to check
      * @throws PageException if current page was not initialized, or element wasn't found on the page
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.check.field.not.empty")
+    @ActionTitle("проверяет что поле непустое")
     public void checkNotEmpty(String elementTitle) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        if (pageChecks.checkEmptiness(element)) {
+        if (checks.checkEmptiness(element)) {
             throw new AutotestError("'" + elementTitle + "' value is empty");
         }
     }
@@ -160,10 +166,10 @@ public abstract class DefaultPage implements Page {
      * @param elementTitle title of the element to check
      * @throws PageException if current page was not initialized, or element wasn't found on the page
      */
-    @ActionTitle("ru.sbtqa.tag.pagefactory.check.field.empty")
+    @ActionTitle("проверяет что поле пустое")
     public void checkEmpty(String elementTitle) throws PageException {
         Object element = ReflectionUtils.getElementByTitle(PageContext.getCurrentPage(), elementTitle);
-        if (!pageChecks.checkEmptiness(element)) {
+        if (!checks.checkEmptiness(element)) {
             throw new AutotestError("'" + elementTitle + "' value is not empty");
         }
     }

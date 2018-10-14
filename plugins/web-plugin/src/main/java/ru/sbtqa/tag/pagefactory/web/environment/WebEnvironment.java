@@ -6,7 +6,6 @@ import ru.sbtqa.tag.pagefactory.web.properties.WebConfiguration;
 import ru.sbtqa.tag.pagefactory.web.support.BrowserName;
 
 public class WebEnvironment extends Environment {
-
     private static final WebConfiguration PROPERTIES = ConfigFactory.create(WebConfiguration.class);
 
     public static BrowserName getBrowserName() {

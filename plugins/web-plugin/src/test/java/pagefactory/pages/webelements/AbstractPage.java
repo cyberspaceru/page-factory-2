@@ -5,8 +5,10 @@ import org.openqa.selenium.support.FindBy;
 import ru.sbtqa.tag.pagefactory.WebPage;
 import ru.sbtqa.tag.pagefactory.annotations.ActionTitle;
 import ru.sbtqa.tag.pagefactory.annotations.ElementTitle;
+import ru.sbtqa.tag.pagefactory.web.actions.WebPageActions;
+import ru.sbtqa.tag.pagefactory.web.checks.WebPageChecks;
 
-public class AbstractPage extends WebPage {
+public class AbstractPage extends WebPage<WebPageActions, WebPageChecks> {
 
     @ElementTitle("Contact")
     @FindBy(xpath = "//a[text()='Contact']")
@@ -23,6 +25,10 @@ public class AbstractPage extends WebPage {
     @ElementTitle("HomeRedirect")
     @FindBy(xpath = "//a[text()='Home']")
     private WebElement homeButtonWithRedirect;
+
+    public AbstractPage() {
+        super(new WebPageActions(), new WebPageChecks());
+    }
 
     @ActionTitle("go to page")
     public void goToPage(String pageName) {

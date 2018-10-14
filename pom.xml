@@ -45,14 +45,8 @@
     </developer>
   </developers>
 
-  <scm>
-    <connection>scm:git:git://github.com/sbtqa/page-factory-2</connection>
-    <developerConnection>scm:git:ssh://github.com:sbtqa/page-factory-2.git</developerConnection>
-    <url>https://github.com/sbtqa/page-factory-2/tree/master</url>
-  </scm>
-
   <properties>
-    <selenium.version>3.11.0</selenium.version>
+    <selenium.version>3.13.0</selenium.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -70,22 +64,9 @@
     <module>page-factory-core</module>
     <module>tests/test-web-app</module>
     <module>plugins/web-plugin</module>
-    <module>plugins/jdi-elements-plugin</module>
-    <module>plugins/html-elements-plugin</module>
-    <module>plugins/mobile-plugin</module>
     <module>plugins/rest-plugin</module>
+    <module>plugins/context</module>
   </modules>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
 
   <dependencies>
     <dependency>

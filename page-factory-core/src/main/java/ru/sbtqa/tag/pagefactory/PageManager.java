@@ -1,6 +1,7 @@
 package ru.sbtqa.tag.pagefactory;
 
 import com.google.common.reflect.ClassPath;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -8,11 +9,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
+
 import org.aeonbits.owner.ConfigFactory;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -31,11 +30,17 @@ public class PageManager {
     private static final Logger LOG = LoggerFactory.getLogger(PageManager.class);
     private static final Map<Class<? extends Page>, Map<Field, String>> PAGES_REPOSITORY = new HashMap<>();
     private static final Configuration PROPERTIES = ConfigFactory.create(Configuration.class);
+    private static final List<Consumer<Page>> ON_PAGE_BOOTSTRAPPED = new ArrayList<>();
 
-    private PageManager() {}
+    private PageManager() {
+    }
 
     public static Map<Class<? extends Page>, Map<Field, String>> getPageRepository() {
         return PAGES_REPOSITORY;
+    }
+
+    public static void subscribeOnPageBootstrappedEvent(Consumer<Page> handler) {
+        ON_PAGE_BOOTSTRAPPED.add(handler);
     }
 
     /**
@@ -85,7 +90,9 @@ public class PageManager {
                 @SuppressWarnings("unchecked")
                 Constructor<Page> constructor = ((Constructor<Page>) page.getConstructor());
                 constructor.setAccessible(true);
-                return  constructor.newInstance();
+                Page instance = constructor.newInstance();
+                ON_PAGE_BOOTSTRAPPED.forEach(x -> x.accept(instance));
+                return instance;
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 throw new PageInitializationException("Failed to initialize page '" + page + "'", e);
             }
@@ -121,7 +128,7 @@ public class PageManager {
     /**
      * Redirect to Page by Page Entry url value
      *
-     * @param title  a page title
+     * @param title a page title
      * @return the page object
      * @throws PageInitializationException if failed to execute corresponding page constructor
      */
