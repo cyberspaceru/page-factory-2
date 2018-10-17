@@ -6,14 +6,14 @@ import ru.context.base.interactions.CxActions;
 import ru.context.base.interactions.CxChecks;
 import ru.context.loader.decorator.CxElementDecorator;
 import ru.context.loader.factory.CxElementLocatorFactory;
-import ru.context.ContextEngine;
+import ru.context.Context;
 import ru.sbtqa.tag.pagefactory.PageManager;
 import ru.sbtqa.tag.pagefactory.WebPage;
 import ru.sbtqa.tag.pagefactory.environment.Environment;
 
 public class CxWebPage<A extends CxActions, C extends CxChecks> extends WebPage<A, C> {
     static {
-        PageManager.subscribeOnPageBootstrappedEvent(ContextEngine::merge);
+        PageManager.subscribeOnPageBootstrappedEvent(Context::merge);
     }
 
     public CxWebPage(A actions, C checks) {
