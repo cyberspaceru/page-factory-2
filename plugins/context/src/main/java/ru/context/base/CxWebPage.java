@@ -24,7 +24,7 @@ public class CxWebPage<A extends CxActions, C extends CxChecks> extends WebPage<
         super(decorator, actions, checks);
     }
 
-    private static FieldDecorator newFieldDecorator() {
+    protected static FieldDecorator newFieldDecorator() {
         WebDriver driver = Environment.getDriverService().getDriver();
         return new CxElementDecorator(new CxElementLocatorFactory(driver));
     }

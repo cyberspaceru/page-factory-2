@@ -61,6 +61,7 @@ public class Context {
         for (Entry<String, Field> entry : data.getEntryFields().entrySet()) {
             String name = entry.getKey();
             Field field = entry.getValue();
+            field.setAccessible(true);
             try {
                 ThreadLocal<Object> threadLocal = VALUES.get(name);
                 if (threadLocal != null) {
@@ -77,6 +78,7 @@ public class Context {
         for (Entry<String, Field> entry : data.getEntryFields().entrySet()) {
             String name = entry.getKey();
             Field field = entry.getValue();
+            field.setAccessible(true);
             try {
                 Object value = field.get(page);
                 if (!VALUES.containsKey(name)) {
