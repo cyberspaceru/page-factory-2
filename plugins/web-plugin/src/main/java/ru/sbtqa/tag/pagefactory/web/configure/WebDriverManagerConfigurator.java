@@ -36,6 +36,10 @@ public class WebDriverManagerConfigurator {
     private WebDriverManagerConfigurator() {}
 
     public static void configureDriver(BrowserManager webDriverManager, String browserType) {
+        String propertyName = "webdriver." + browserType.toLowerCase() + ".driver";
+        if (System.getProperty(propertyName) != null) {
+            return;
+        }
         if (!PROPERTIES.getDriversPath().isEmpty()) {
             System.setProperty("webdriver." + browserType.toLowerCase() + ".driver", new File(PROPERTIES.getDriversPath()).getAbsolutePath());
         } else {
